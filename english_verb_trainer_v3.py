@@ -97,6 +97,7 @@ st.markdown("""
 <style>
 .block-container {max-width: 900px; padding-top: 2rem;}
 div.stButton > button {min-height: 3rem; border-radius: 12px; font-weight: 600;}
+div.stButton > button[kind="primary"] {color: #000000 !important;}
 .study-card {padding: 1rem; border: 1px solid #d9dce3; border-radius: 14px; margin: .5rem 0 1rem;}
 .big-word {font-size: 1.6rem; font-weight: 750; text-align: center; padding: .35rem;}
 .timeline {display:flex; align-items:center; justify-content:space-around; gap:8px; flex-wrap:wrap; text-align:center;}
