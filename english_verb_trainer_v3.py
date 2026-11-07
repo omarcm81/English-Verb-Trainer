@@ -1,10 +1,10 @@
 
 import random
 import time
-import json
+from io import BytesIO
 import streamlit as st
-import streamlit.components.v1 as components
 from streamlit_autorefresh import st_autorefresh
+from gtts import gTTS
 
 st.set_page_config(page_title="English Verb Trainer", page_icon="📘", layout="centered")
 
@@ -111,33 +111,22 @@ st.caption("Relaciona infinitivo → pasado simple → participio, y aprende el 
 st.caption(f"Material de estudio: {len(VERBOS)} verbos de las dos hojas.")
 
 
+@st.cache_data(show_spinner=False)
+def generate_audio(text):
+    """Genera un MP3 en inglés y lo guarda en caché para no repetir la descarga."""
+    audio_buffer = BytesIO()
+    gTTS(text=text, lang="en", slow=False).write_to_fp(audio_buffer)
+    return audio_buffer.getvalue()
+
+
 def speak_button(word, key, language="en-US"):
-    """Botón de pronunciación usando la voz disponible en el navegador."""
-    word_js = json.dumps(word, ensure_ascii=False)
-    lang_js = json.dumps(language)
-    html = f"""
-    <button id="speak-{key}" style="
-        width:100%; min-height:38px; border:1px solid #9aa8ba;
-        border-radius:10px; background:#f3f6fb; color:#20334d;
-        font-size:14px; font-weight:600; cursor:pointer;">
-        🔊 Escuchar
-    </button>
-    <script>
-    const btn = document.getElementById("speak-{key}");
-    btn.addEventListener("click", () => {{
-        if (!("speechSynthesis" in window)) {{
-            btn.innerText = "Audio no disponible";
-            return;
-        }}
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance({word_js});
-        utterance.lang = {lang_js};
-        utterance.rate = 0.85;
-        window.speechSynthesis.speak(utterance);
-    }});
-    </script>
-    """
-    components.html(html, height=46)
+    """Muestra el reproductor de audio nativo, compatible con Safari/iPhone."""
+    if word == "—":
+        st.caption("Este verbo modal no tiene past participle.")
+        return
+    st.audio(generate_audio(word), format="audio/mp3")
+
+
 
 def start_round(size, seconds):
     indices = list(range(len(VERBOS)))
