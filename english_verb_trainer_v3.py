@@ -6,7 +6,7 @@ import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from gtts import gTTS
 
-st.set_page_config(page_title="English Verb Trainer", page_icon="📘", layout="centered")
+st.set_page_config(page_title="My English Space", page_icon="🌸", layout="centered")
 
 VERBOS = [
     ("be", "was / were", "been", "ser / estar"),
@@ -95,21 +95,81 @@ VERBOS = [
 
 st.markdown("""
 <style>
-.block-container {max-width: 900px; padding-top: 2rem;}
-div.stButton > button {min-height: 3rem; border-radius: 12px; font-weight: 600;}
-div.stButton > button[kind="primary"] {color: #000000 !important;}
-.study-card {padding: 1rem; border: 1px solid #d9dce3; border-radius: 14px; margin: .5rem 0 1rem;}
-.big-word {font-size: 1.6rem; font-weight: 750; text-align: center; padding: .35rem;}
+:root {
+  --pink: #f7c9dc;
+  --pink-dark: #9b456b;
+  --lavender: #e9e2fa;
+  --mint: #dff3e9;
+  --peach: #ffeadf;
+  --ink: #342633;
+}
+.stApp {
+  background: linear-gradient(145deg, #fff8fb 0%, #fffafd 48%, #f8f5ff 100%);
+  color: var(--ink);
+}
+.block-container {max-width: 900px; padding-top: 1.6rem; padding-bottom: 3rem;}
+h1, h2, h3 {color: #8f4268 !important; letter-spacing: -.02em;}
+p, label, .stCaption, [data-testid="stMarkdownContainer"] {color: #493746;}
+[data-testid="stHeader"] {background: rgba(255,248,251,.88);}
+div.stButton > button, div.stFormSubmitButton > button {
+  min-height: 3.15rem;
+  border-radius: 16px;
+  border: 1px solid #e8b5cb;
+  background: #f7c9dc;
+  color: #342633 !important;
+  font-weight: 750;
+  box-shadow: 0 3px 10px rgba(155,69,107,.08);
+}
+div.stButton > button:hover, div.stFormSubmitButton > button:hover {
+  border-color: #c77c9e;
+  background: #f3b8d0;
+  color: #342633 !important;
+}
+div.stButton > button[kind="primary"], div.stFormSubmitButton > button[kind="primary"] {
+  background: #f4bfd4 !important;
+  color: #2e2029 !important;
+  border: 1px solid #df9fba !important;
+}
+.stRadio [role="radiogroup"] {gap: .55rem;}
+.stRadio label, [data-baseweb="select"] > div {
+  border-radius: 13px !important;
+}
+[data-testid="stProgressBar"] > div > div {
+  background: linear-gradient(90deg, #efabc9, #c9b8ee, #a9ddc5);
+}
+.study-card {
+  padding: 1.1rem;
+  background: rgba(255,255,255,.88);
+  border: 1px solid #f0d5e2;
+  border-radius: 20px;
+  margin: .6rem 0 1rem;
+  box-shadow: 0 5px 18px rgba(155,69,107,.07);
+}
+.big-word {font-size: 1.55rem; font-weight: 800; text-align: center; padding: .4rem; color:#57334a;}
 .timeline {display:flex; align-items:center; justify-content:space-around; gap:8px; flex-wrap:wrap; text-align:center;}
-.timeline-step {flex:1; min-width:130px; padding:10px; background:#f0f4fa; border-radius:12px;}
-.timeline-label {font-size:.75rem; color:#536176; font-weight:700;}
-.timeline-arrow {font-size:1.5rem; font-weight:700;}
+.timeline-step {flex:1; min-width:130px; padding:12px 8px; background:#fff0f6; border:1px solid #f3d4e1; border-radius:16px;}
+.timeline-step:nth-child(3) {background:#f1edfb; border-color:#e3dcf6;}
+.timeline-step:nth-child(5) {background:#eaf7f0; border-color:#d5eee0;}
+.timeline-label {font-size:.75rem; color:#79566c; font-weight:800; letter-spacing:.04em;}
+.timeline-arrow {font-size:1.35rem; font-weight:800; color:#b56d91;}
+[data-testid="stMetric"] {
+  background:#fff0f6; border:1px solid #f1d2e0;
+  padding: .8rem; border-radius:16px;
+}
+[data-testid="stAlert"] {border-radius:15px;}
+audio {width:100%;}
+@media (max-width: 600px) {
+  .block-container {padding-left: 1rem; padding-right: 1rem; padding-top: 1rem;}
+  .big-word {font-size:1.3rem;}
+  .timeline-step {min-width:100px;}
+}
 </style>
 """, unsafe_allow_html=True)
 
-st.title("📘 English Verb Trainer")
-st.caption("Relaciona infinitivo → pasado simple → participio, y aprende el significado en español.")
-st.caption(f"Material de estudio: {len(VERBOS)} verbos de las dos hojas.")
+
+st.title("🌸 My English Space")
+st.caption("✨ Aprende, practica y descubre cuánto sabes. ¡You can do it!")
+st.caption(f"💗 Tu espacio de inglés · {len(VERBOS)} verbos para dominar.")
 
 
 @st.cache_data(show_spinner=False)
@@ -155,8 +215,8 @@ if "started" not in st.session_state:
     st.session_state.started = False
 
 if not st.session_state.started:
-    st.subheader("¡Vamos a practicar!")
-    st.write("Aparecerá un verbo y tendrás que relacionar sus formas y su significado.")
+    st.subheader("🌷 ¡Let’s practice!")
+    st.write("Relaciona las formas del verbo y su significado. ¡Cada respuesta te acerca a tu meta!")
     size = st.radio("¿Cuántos verbos quieres practicar?", [5, 10, 15, 20, 82], index=1, horizontal=True)
     seconds = st.radio(
         "Tiempo para responder cada verbo",
@@ -174,17 +234,17 @@ else:
 
     if pos >= total:
         st.balloons()
-        st.success("¡Práctica terminada!")
+        st.success("🎉 ¡Practice complete! ¡Lo hiciste genial!")
         possible = total * 3
         percentage = round(st.session_state.score / possible * 100) if possible else 0
         st.metric("Resultado", f"{st.session_state.score} / {possible}")
         st.progress(percentage / 100, text=f"{percentage}% de respuestas correctas")
         if percentage >= 90:
-            st.write("¡Excelente dominio!")
+            st.write("🏆 ¡Increíble! ¡Eres una estrella del inglés!")
         elif percentage >= 70:
-            st.write("¡Muy bien! Repasa los verbos que fallaste.")
+            st.write("🌟 ¡Muy bien! Un poquito más de práctica y lo dominarás.")
         else:
-            st.write("Conviene repetir la práctica para reforzar las relaciones.")
+            st.write("💪 ¡Tú puedes! Repite la práctica y verás cuánto mejoras.")
         if st.button("🔁 Practicar otra ronda", type="primary", use_container_width=True):
             st.session_state.started = False
             st.rerun()
