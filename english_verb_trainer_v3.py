@@ -2,6 +2,7 @@
 import random
 import time
 from io import BytesIO
+from pathlib import Path
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from gtts import gTTS
@@ -325,6 +326,14 @@ else:
                     st.success(f"{label}: {chosen} ✓")
                 else:
                     st.error(f"{label}: elegiste «{chosen}». Correcto: **{correct}**")
+
+            if all(st.session_state.answer_ok):
+                gif_path = Path(__file__).parent / "ninocelebrando.gif"
+                if gif_path.exists():
+                    st.image(str(gif_path), use_container_width=True)
+                st.success("🎉 ¡Perfecto! ¡Todas tus respuestas son correctas!")
+            elif any(st.session_state.answer_ok):
+                st.info("🌟 ¡Bien hecho! Algunas respuestas fueron correctas. Sigue practicando.")
 
             st.markdown("**🔊 Escucha las tres formas del verbo**")
             audio_cols = st.columns(3)
